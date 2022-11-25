@@ -16,7 +16,7 @@ public class Film {
     private int duration;
 
     public Film(String name) {
-
+    this.name = name;
     }
 
 
