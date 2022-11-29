@@ -6,7 +6,6 @@ import org.junit.jupiter.api.function.Executable;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,11 +48,32 @@ public class FilmTest {
     void shouldThrowExceptionWithEarlierReleaseDate() {
         Film film = new Film("Terminator");
         film.setReleaseDate(LocalDate.parse("1895-12-27"));
+        film.setDescription("a");
+        final ValidationException ex = assertThrows(
+                ValidationException.class,
+                new Executable() {
+                    @Override
+                    public void execute(){
+                        film.validate();
+                    }
+                }
+        );
     }
 
     @Test
     void shouldThrowExceptionWithNegativeDuration() {
         Film film = new Film("Terminator");
         film.setDuration(-1);
+        film.setDescription("a");
+        film.setReleaseDate(LocalDate.parse("1995-12-27"));
+        final ValidationException ex = assertThrows(
+                ValidationException.class,
+                new Executable() {
+                    @Override
+                    public void execute(){
+                        film.validate();
+                    }
+                }
+        );
     }
 }

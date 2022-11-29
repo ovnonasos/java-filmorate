@@ -25,6 +25,8 @@ public class User {
             throw new ValidationException("Неверный логин");
         } else if (birthday.isAfter(LocalDate.now())){
             throw new ValidationException("Неверная дата рождения");
+        } else if (name == null || name.equals("")){
+            name = login;
         }
     }
 }
