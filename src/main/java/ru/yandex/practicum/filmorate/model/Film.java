@@ -13,6 +13,7 @@ public class Film {
     private String name;
     @NonNull
     private String description;
+    @NonNull
     private LocalDate releaseDate;
     private int duration;
 
