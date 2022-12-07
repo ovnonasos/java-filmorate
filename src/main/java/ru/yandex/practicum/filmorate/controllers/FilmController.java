@@ -8,13 +8,14 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
     private int id = 0;
-    private final HashMap<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>();
 
     @GetMapping
     public List<Film> getFilms(){
@@ -36,15 +37,12 @@ public class FilmController {
     public Film updateFilm(@RequestBody Film film){
         log.info("Получен запрос на обновление фильма");
         film.validate();
-        for(Film film1 : films.values()){
-            if (film.getId() == film1.getId()){
-                films.remove(film1.getId());
+            if (films.containsKey(film.getId())){
+                films.remove(film.getId());
                 films.put(film.getId(), film);
                 return film;
-            } else if (film.getId() > id) {
-                throw new ValidationException("Слишком большой id");
+            } else {
+                throw new ValidationException("Неверный id");
             }
-        }
-        return film;
     }
 }

@@ -8,13 +8,14 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
     private int id = 0;
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     @GetMapping
     public List<User> getUsers(){
@@ -36,15 +37,12 @@ public class UserController {
     public User updateUser(@RequestBody User user){
         log.info("Получен запрос на обновление пользователя");
         user.validate();
-        for(User user1 : users.values()){
-            if (user.getId() == user1.getId()){
-                users.remove(user1.getId());
+            if (users.containsKey(user.getId())){
+                users.remove(user.getId());
                 users.put(user.getId(), user);
                 return user;
-            } else if (user.getId() > id){
-                throw new ValidationException("Слишком большой id");
+            } else {
+                throw new ValidationException("Неверный id");
             }
-        }
-        return user;
     }
 }

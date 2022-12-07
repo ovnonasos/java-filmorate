@@ -16,6 +16,7 @@ public class Film {
     @NonNull
     private LocalDate releaseDate;
     private int duration;
+    private final LocalDate DATE = LocalDate.parse("1895-12-28");
 
     public Film(String name) {
     this.name = name;
@@ -27,7 +28,7 @@ public class Film {
             throw new ValidationException("Неверное имя");
         } else if (description.length() > 200){
             throw new ValidationException("Слишком длинное описание");
-        } else if (releaseDate.isBefore(LocalDate.parse("1895-12-28"))){
+        } else if (releaseDate.isBefore(DATE)){
             throw new ValidationException("Слишком старый фильм");
         } else if (duration < 0){
             throw new ValidationException("Продолжительность фильма должна быть положительной");
