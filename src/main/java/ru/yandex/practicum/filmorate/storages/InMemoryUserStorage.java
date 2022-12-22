@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private int id = 0;
     private final Map<Integer, User> users = new HashMap<>();
 
@@ -30,13 +30,22 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User updateUser(User user) {
-            user.validate();
-            if (users.containsKey(user.getId())) {
-                users.remove(user.getId());
-                users.put(user.getId(), user);
-                return user;
-            } else {
-                throw new NotFoundException();
-            }
+        user.validate();
+        if (users.containsKey(user.getId())) {
+            users.remove(user.getId());
+            users.put(user.getId(), user);
+            return user;
+        } else {
+            throw new NotFoundException("Не найдено");
+        }
+    }
+
+    public User getById(int id) {
+        try {
+            return getUsers().get(id - 1);
+        } catch (Exception ex) {
+            throw new NotFoundException("Не найдено");
+        }
+
     }
 }

@@ -3,11 +3,11 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.services.FilmService;
 
-import java.util.*;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/films")
@@ -24,19 +24,19 @@ public class FilmController {
     @GetMapping
     public List<Film> getFilms(){
         log.info("Получен запрос на получение всех фильмов");
-        return filmService.getInMemoryFilmStorage().getFilms();
+        return filmService.getFilms();
     }
 
     @PostMapping
-    public Film addFilm(@RequestBody Film film){
+    public Film addFilm(@RequestBody @Valid Film film){
         log.info("Получен запрос на добавление фильма");
-        return filmService.getInMemoryFilmStorage().addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film){
+    public Film updateFilm(@RequestBody @Valid Film film){
         log.info("Получен запрос на обновление фильма");
-        return filmService.getInMemoryFilmStorage().updateFilm(film);
+        return filmService.updateFilm(film);
     }
 
     @GetMapping("/{id}")
@@ -55,11 +55,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(required = false, defaultValue = "0") int count){
-        if (count != 0) {
+    public List<Film> getPopularFilms(@RequestParam(required = false, defaultValue = "10") int count){
             return filmService.getTopFilms(count);
-        } else {
-            return filmService.getTop10Films();
-        }
     }
 }

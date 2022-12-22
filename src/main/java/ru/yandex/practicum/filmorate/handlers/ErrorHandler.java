@@ -9,19 +9,18 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
 import java.util.Map;
 
-
 @RestControllerAdvice
-public class ControllerAdvice {
+public class ErrorHandler {
 
-    @ExceptionHandler()
+    @ExceptionHandler(value = ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> validatesBad(final ValidationException e) {
+    public Map<String, String> validatesBad() {
         return Map.of("response", "Ошибка валидации");
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> notFound (final NotFoundException e){
+    public Map<String, String> notFound (){
         return Map.of("response", "Не найдено");
 
     }
