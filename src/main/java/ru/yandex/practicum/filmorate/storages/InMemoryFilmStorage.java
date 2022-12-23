@@ -33,7 +33,6 @@ public class InMemoryFilmStorage implements FilmStorage{
     public Film updateFilm(Film film) {
         film.validate();
         if (films.containsKey(film.getId())){
-            films.remove(film.getId());
             films.put(film.getId(), film);
             return film;
         } else {
@@ -43,7 +42,8 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     public Film getById(int id){
         try {
-            return films.get(id - 1);
+            films.get(id).validate();
+            return films.get(id);
         } catch (Exception ex){
             throw new NotFoundException("Не найдено");
         }

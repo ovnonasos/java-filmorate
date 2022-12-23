@@ -41,7 +41,8 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User getById(int id) {
         try {
-            return users.get(id - 1);
+            users.get(id).validate();
+            return users.get(id);
         } catch (Exception ex) {
             throw new NotFoundException("Не найдено");
         }

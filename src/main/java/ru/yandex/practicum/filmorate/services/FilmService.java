@@ -59,7 +59,7 @@ public class FilmService {
             film.setLikes(film.getLikes() - 1);
             user.getLikedFilms().remove(film);
             film.getLikers().remove(user);
-        } else {
+        } else if (film.getLikes() == 0) {
             throw new ValidationException("У фильма нет лайка");
         }
     }
