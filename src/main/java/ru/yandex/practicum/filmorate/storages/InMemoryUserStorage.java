@@ -32,7 +32,6 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User user) {
         user.validate();
         if (users.containsKey(user.getId())) {
-            users.remove(user.getId());
             users.put(user.getId(), user);
             return user;
         } else {
@@ -42,7 +41,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User getById(int id) {
         try {
-            return getUsers().get(id - 1);
+            return users.get(id - 1);
         } catch (Exception ex) {
             throw new NotFoundException("Не найдено");
         }

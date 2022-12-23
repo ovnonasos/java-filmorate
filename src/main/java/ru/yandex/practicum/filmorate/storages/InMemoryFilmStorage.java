@@ -43,7 +43,7 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     public Film getById(int id){
         try {
-            return getFilms().get(id - 1);
+            return films.get(id - 1);
         } catch (Exception ex){
             throw new NotFoundException("Не найдено");
         }

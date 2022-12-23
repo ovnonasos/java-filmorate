@@ -18,8 +18,8 @@ public class UserService {
     private final UserStorage inMemoryUserStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage inMemoryUserStorage) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    public UserService(UserStorage userStorage) {
+        this.inMemoryUserStorage = userStorage;
     }
 
     public boolean validateFriends(User user) {
@@ -41,9 +41,7 @@ public class UserService {
     public void addFriend(int id1, int id2) {
         User user1 = inMemoryUserStorage.getById(id1);
         User user2 = inMemoryUserStorage.getById(id2);
-        if (user1.getFriendsIds().contains(user2.getId())) {
-            throw new FriendException("Пользователь уже находится в друзьях");
-        } else if (!validateFriends(user1) || !validateFriends(user2)) {
+        if (!validateFriends(user1) || !validateFriends(user2)) {
             throw new FriendException("Пользователь не существует");
         } else {
             user1.getFriendsIds().add(user2.getId());
@@ -54,9 +52,7 @@ public class UserService {
     public void removeFriend(int id1, int id2) {
         User user1 = inMemoryUserStorage.getById(id1);
         User user2 = inMemoryUserStorage.getById(id2);
-        if (!user1.getFriendsIds().contains(user2.getId())) {
-            throw new FriendException("Пользователя нет в друзьях");
-        } else if (!validateFriends(user1) || !validateFriends(user2)) {
+        if (!validateFriends(user1) || !validateFriends(user2)) {
             throw new FriendException("Пользователь не существует");
         } else {
             user1.getFriendsIds().remove(Integer.valueOf(user2.getId()));

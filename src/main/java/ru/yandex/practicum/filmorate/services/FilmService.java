@@ -22,51 +22,53 @@ public class FilmService {
     private final UserStorage inMemoryUserStorage;
 
     @Autowired
-    public FilmService (InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage){
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+        this.inMemoryFilmStorage = filmStorage;
+        this.inMemoryUserStorage = userStorage;
     }
 
-    public List<Film> getFilms(){
+    public List<Film> getFilms() {
         return inMemoryFilmStorage.getFilms();
     }
 
-    public Film addFilm(Film film){
+    public Film addFilm(Film film) {
         return inMemoryFilmStorage.addFilm(film);
     }
 
-    public Film getFilmById(int id){
-            return inMemoryFilmStorage.getById(id);
+    public Film getFilmById(int id) {
+        return inMemoryFilmStorage.getById(id);
     }
 
-    public void addLike (int userId, int filmId){
-            User user = inMemoryUserStorage.getById(userId);
-            Film film = inMemoryFilmStorage.getById(filmId);
-            if (!user.getLikedFilms().contains(film)) {
-                film.setLikes(film.getLikes() + 1);
-                film.getLikers().add(user);
-                user.getLikedFilms().add(film);
-            } else {
-                throw new ValidationException("У фильма уже стоит лайк");
-            }
-
-    }
-
-    public void removeLike(int userId, int filmId){
+    public void addLike(int userId, int filmId) {
         User user = inMemoryUserStorage.getById(userId);
         Film film = inMemoryFilmStorage.getById(filmId);
-            if (film.getLikers().contains(user) && !user.getLikedFilms().contains(film)){
-                film.setLikes(film.getLikes() - 1);
-                user.getLikedFilms().remove(film);
-                film.getLikers().remove(user);
-            }
+        if (!user.getLikedFilms().contains(film)) {
+            film.setLikes(film.getLikes() + 1);
+            film.getLikers().add(user);
+            user.getLikedFilms().add(film);
+        } else {
+            throw new ValidationException("У фильма уже стоит лайк");
+        }
+
     }
 
-    public List<Film> getTopFilms(int count){
-            return inMemoryFilmStorage.getFilms().stream()
-                    .sorted(Comparator.comparingInt(Film::getLikes).reversed())
-                    .limit(count)
-                    .collect(Collectors.toList());
+    public void removeLike(int userId, int filmId) {
+        User user = inMemoryUserStorage.getById(userId);
+        Film film = inMemoryFilmStorage.getById(filmId);
+        if (film.getLikers().contains(user) && !user.getLikedFilms().contains(film)) {
+            film.setLikes(film.getLikes() - 1);
+            user.getLikedFilms().remove(film);
+            film.getLikers().remove(user);
+        } else {
+            throw new ValidationException("У фильма нет лайка");
+        }
+    }
+
+    public List<Film> getTopFilms(int count) {
+        return inMemoryFilmStorage.getFilms().stream()
+                .sorted(Comparator.comparingInt(Film::getLikes).reversed())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     public Film updateFilm(Film film) {
