@@ -1,10 +1,13 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Film {
@@ -17,6 +20,10 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private final LocalDate DATE = LocalDate.parse("1895-12-28");
+    private int likes;
+    @JsonIgnore
+    private List<User> likers = new ArrayList<>();
+
 
     public Film(String name) {
     this.name = name;

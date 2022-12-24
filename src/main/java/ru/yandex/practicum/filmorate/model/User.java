@@ -5,6 +5,8 @@ import lombok.NonNull;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class User {
@@ -16,7 +18,8 @@ public class User {
     private String name;
     @NonNull
     private LocalDate birthday;
-
+    private List<Integer> friendsIds = new ArrayList<>();
+    private List<Film> likedFilms = new ArrayList<>();
 
     public void validate(){
         if (email.equals("") || !email.contains("@")){
